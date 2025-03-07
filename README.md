@@ -34,6 +34,8 @@ cd MAGNET-AD
 pip install -r requirements.txt
 ```
 
+Download model weights: [Weights](https://mbzuaiac-my.sharepoint.com/:u:/g/personal/salma_hassan_mbzuai_ac_ae/EQJEbpgb8yBLnQtp3tLxaFQBgbW4NJ8Uymm7lDF7Q7EpmA?e=NPyjOm)
+
 ## 🚀 Usage
 
 ### Generate brain graphs separately:
@@ -51,7 +53,7 @@ python generate_graphs.py \
   --create_splits
 ```
 
-### Run inference on pre-generated graphs:<pre><div class="relative flex flex-col rounded-lg"><div class="text-text-300 absolute pl-3 pt-2.5 text-xs"></div></div></pre>
+### Run inference on pre-generated graphs:
 
 ```python
 python simple_inference.py \
@@ -64,11 +66,8 @@ python simple_inference.py \
 
 ### Generate graphs and run inference on patient data:
 
-<pre><div class="relative flex flex-col rounded-lg"><div class="text-text-300 absolute pl-3 pt-2.5 text-xs"></div></div></pre>
-
-
 ```python
-python complete_workflow.py \
+python complete_inference.py \
   --model_path "models/magnetad_model.pt" \
   --embeddings_dir "/path/to/structure_embeddings" \
   --correlation_path "/path/to/bold_correlations.csv" \
@@ -79,3 +78,51 @@ python complete_workflow.py \
   --output_dir "./results" \
   --verbose
 ```
+
+### Command line arguments for inference:
+
+* `--model_path`: Path to the saved model (required)
+* `--data_dir`: Directory containing brain graph data (required)
+* `--csv_file`: Path to patient clinical CSV file (required)
+* `--output_file`: Path to save prediction results (default: "./predictions.pkl")
+* `--patient_ids`: Comma-separated list of patient IDs (optional)
+* `--bold_threshold`: BOLD correlation threshold value (default: 50)
+
+## 📊 Performance
+
+MAGNET-AD achieves state-of-the-art performance in preclinical AD prediction:
+
+* 🔹 Concordance Index: 0.858 for conversion time prediction
+* 🔹 Mean Square Error: 1.983 for PACC prediction
+* 🔹 Superior performance across various timepoints, even with limited visit data
+* 🔹 Outperforms existing approaches (LSTM, TCN, Transformer, and GCN STGNN)
+
+## 📂 Required Data Files
+
+The model requires the following data files:
+
+* 📋  **Clinical Data** : Patient information including survival times and PACC scores
+* 🧠  **Brain Structure Embeddings** : 512-dimensional embeddings for each brain structure
+* 🔄  **BOLD Correlations** : Functional connectivity between brain regions
+* 🧬  **Gene-Gene Interactions** : Information about gene co-expression patterns
+* 🔗  **Gene-Structure Connections** : Relationships between genes and brain structures
+* 🧪  **Gene Embeddings** : 768-dimensional gene embeddings
+* 📊 **Radiomics Data** (optional): Region-specific radiomics features for temporal edges
+
+## 🔍 Interpretability
+
+MAGNET-AD provides clinically relevant insights through:
+
+* 🧠 Attention-based visualization of critical brain regions across time
+* 🧬 Identification of key gene-to-structure connections in disease progression
+* 📈 Learned temporal importance weights that highlight critical time points
+* 🔄 Alignment with established Braak staging of AD pathology
+
+## 🔄 Model Variants
+
+Experiment with different model configurations:
+
+* MRI-only: Using just neuroimaging data
+* MRI+Genetic: Integrating both modalities
+* With/without temporal weights: Control the importance of time-dependent features
+* With/without radiomics features: Include radiomics features for edge weights
